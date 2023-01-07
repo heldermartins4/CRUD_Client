@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useEffect, useState } from "react";
 
-function App() {
+import axios from "axios";
+import { address } from "./api"; // it's adress API
+
+import SocketContext from "./contexts/socketIO";
+
+const App = () => {
+
+  const socket = useContext(SocketContext) // use a context for a socket
+  const [message, setMessage] = useState([])
+
+  useEffect(() => {
+    socket.on('messages', (data) => {
+      // console.log(`Data: ${data["name"]}`)
+    })
+  })
+
+  const myFunction = () => {
+    // axios
+    //     .post(address.concat("/createUsers"), {data:data})
+    //     .then((response) => {
+    //       console.log(response)
+    //     })
+
+    socket.emit('message', {message:"Olá Helder"})
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <button onClick={myFunction}>Clique aqui</button>
+    </>
   );
 }
 
